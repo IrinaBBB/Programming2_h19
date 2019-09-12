@@ -1,6 +1,8 @@
 package postfix_notation;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 
 public class PostfixNotation {
     public static void main(String[] args) throws Exception {
@@ -20,7 +22,7 @@ public class PostfixNotation {
 
     public static int evaluateExpression(String expression) throws Exception {
 
-        Stack<Integer> operandStack = new Stack<>();
+        Deque<Integer> operandDeque = new ArrayDeque<>();
 
         expression = insertBlanks(expression);
 
@@ -31,27 +33,27 @@ public class PostfixNotation {
                 continue;
             else if (token.charAt(0) == '+' || token.charAt(0) == '-' ||
                     token.charAt(0) == '/' || token.charAt(0) == '*')
-                processAnOperator(operandStack, token.charAt(0));
+                processAnOperator(operandDeque, token.charAt(0));
 
             else if (Character.isDigit(token.charAt(0)))
-                operandStack.push(Integer.parseInt(token));
+                operandDeque.push(Integer.parseInt(token));
 
             else
                 throw new Exception("Wrong expression");
 
         }
-        return operandStack.pop();
+        return operandDeque.pop();
     }
 
-    public static void processAnOperator(Stack<Integer> operandStack, char operator) {
-        int op1 = operandStack.pop();
-        int op2 = operandStack.pop();
+    public static void processAnOperator(Deque<Integer> operandDeque, char operator) {
+        int op1 = operandDeque.pop();
+        int op2 = operandDeque.pop();
 
         switch (operator) {
-            case '+': operandStack.push(op2 + op1); break;
-            case '-': operandStack.push(op2 - op1); break;
-            case '/': operandStack.push(op2 / op1); break;
-            case '*': operandStack.push(op2 * op1);
+            case '+': operandDeque.push(op2 + op1); break;
+            case '-': operandDeque.push(op2 - op1); break;
+            case '/': operandDeque.push(op2 / op1); break;
+            case '*': operandDeque.push(op2 * op1);
         }
 
 
@@ -69,7 +71,6 @@ public class PostfixNotation {
         }
 
         return result;
-
     }
 }
 
